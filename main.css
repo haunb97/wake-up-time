@@ -1,0 +1,58 @@
+body {
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  height: 600px;
+}
+canvas {
+  padding: 0;
+  margin: 0;
+}
+div.btnbg {
+  position: fixed;
+  left: 0;
+  top: 0;
+}
+
+/* span {
+  font-size: 72px;
+  border-image-source: linear-gradient(to bottom #743ad5, #d53a9d, 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+} */
+
+.content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: transparent;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  color: white;
+  padding: 2rem;
+}
+
+.wrap-watch {
+  display: flex;
+  width: 100%;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+.watch {
+  /* flex: 1; */
+  /* min-width: 300px;
+  min-height: 300px; */
+  border-radius: 8px;
+  padding: 4px;
+  background: linear-gradient(to bottom, #33ccff 0%, #ff99cc 100%);
+}
+
+.watch-content {
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  background-color: white;
+}
