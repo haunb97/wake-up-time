@@ -299,36 +299,73 @@
       }
     </script>
     <div class="content">
-      <div class="wrap-watch">
-        <div class="watch">
-          <div class="watch-content">
-            <div class="cycle"><span>haudnag</span></div>
-            <div class="wake-up-time">f</div>
-            <div class="time-sleep">f</div>
-          </div>
-        </div>
-        <div class="watch">
-          <div class="watch-content">
-            <div class="cycle">fs</div>
-            <div class="wake-up-time">f</div>
-            <div class="time-sleep">f</div>
-          </div>
-        </div>
-        <div class="watch">
-          <div class="watch-content">
-            <div class="cycle">fs</div>
-            <div class="wake-up-time">f</div>
-            <div class="time-sleep">f</div>
-          </div>
-        </div>
-        <div class="watch">
-          <div class="watch-content">
-            <div class="cycle">fs</div>
-            <div class="wake-up-time">f</div>
-            <div class="time-sleep">f</div>
-          </div>
-        </div>
-      </div>
+      <div id="wrap-watch" class="wrap-watch"></div>
     </div>
   </body>
+  <script>
+    const MINUTE_ONE_HOUR = 60;
+    const MINUTE_ONE_CYCLE = 90; // một chu kì ngủ kéo dài khoảng 90'
+    const TIME_INTO_SLEEP = 14; // thời gian để một ngưỜi đi vào trạng thái ngủ
+    function calculateTimesWakeUp(hour, minute) {
+      let hourWakeUp = 0;
+      let countCycle = 2;
+      let results = [];
+      for (countCycle; countCycle < 6; countCycle++) {
+        const currentMinutes = hour * MINUTE_ONE_HOUR + minute;
+        const timeSleep = MINUTE_ONE_CYCLE * countCycle + TIME_INTO_SLEEP;
+        hourWakeUp = Math.floor((currentMinutes + timeSleep) / MINUTE_ONE_HOUR);
+        const minuteWakeUp = (currentMinutes + timeSleep) % MINUTE_ONE_HOUR;
+        if (hourWakeUp > 24) {
+          hourWakeUp = hourWakeUp - 24;
+        }
+        console.log("hourWakeUp", hourWakeUp);
+        results = [
+          ...results,
+          {
+            countCycle,
+            hourWakeUp,
+            minuteWakeUp,
+            totalTimeSleep: Math.floor(timeSleep / MINUTE_ONE_HOUR),
+          },
+        ];
+      }
+      return results;
+    }
+
+    function handleClickSleepNow() {
+      const times = new Date();
+      const hour = times.getHours();
+      const minute = times.getMinutes();
+      const data = calculateTimesWakeUp(hour, minute);
+      console.log("handleClickSleepNow   data", data);
+      const main = document.getElementById("wrap-watch");
+      if (main) {
+        const watch = document.createElement("div");
+        watch.classList.add("wrap-watch");
+        let html = "";
+        data.map((item, index) => {
+          html =
+            html +
+            `<div class="watch" key="${index}">
+            <div class="watch-content">
+              <div class="cycle"><span>${item.countCycle}</span></div>
+              <div class="wake-up-time"><span>${
+                item.hourWakeUp < 10 ? `0${item.hourWakeUp}` : item.hourWakeUp
+              }:${
+              item.minuteWakeUp < 10
+                ? `0${item.minuteWakeUp}`
+                : item.minuteWakeUp
+            }</span></div>
+              <div class="time-sleep"><span>${item.totalTimeSleep}</span></div>
+            </div>
+            </div>
+            `;
+        });
+        watch.innerHTML = html;
+        main.append(watch);
+      }
+    }
+
+    handleClickSleepNow();
+  </script>
 </html>
